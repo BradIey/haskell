@@ -29,61 +29,29 @@ instance ToJSON Data
 instance FromJSON Data
 
 -- GET JSON
------------------------------------------------
+-----------------------------------------------------------------------
 jsonURL :: String
 jsonURL = "http://www.phoric.eu/temperature"
 
 -- Gets the JSON object from the URL
 getJSON :: IO B.ByteString
 getJSON = simpleHttp jsonURL
-------------------------------------------------
+-----------------------------------------------------------------------
 
-respond :: IO ()
-respond = simpleHTTP nullConf $ ok $ printTemps
-
-printTemps :: IO ()
-printTemps = do
-				temps <- getTemps
-				case temps of
-					Nothing -> print ""
-					Just ts -> putStrLn $ show ts
 
 -- WRITE TO FILE
-------------------------------------------------------------
--- Combines all the of temperature data
+-----------------------------------------------------------------------
+-- Combines all the of temperature data by mapping show over the list 
+-- and calling unlines on the result
+
 cmbine :: [Data] -> String
 cmbine xs = A.unlines (A.map show xs)
 
--- Writes all of the temperatures to file
+-- Writes all of the temperatures to file by getting
 toFile :: Temperatures -> IO ()
 toFile xs = writeFile "Hello.txt" $ cmbine $ temperatures xs 
-------------------------------------------------------------
-
-rq :: ServerPart Response
-rq = maybeTempsToResponse <$> liftIO getTemps
-	 where
-	 	maybeTempsToResponse :: (Maybe Temperatures) -> Response
--- GET TEMPERATURES OBJECT FROM FILE
--------------------------------------------------
--- Gets the temperatures data from file
-getTemps :: IO (Maybe Temperatures)
-getTemps =  decode <$> getFile
-		    where
-			    getFile = B.readFile "Hello.txt"
-
-{-
-   Cannot convert impure to pure
-   getInts :: [Int] 
-   getInts =  A.map temperature $ temperatures $ getTemps
--}
--------------------------------------------------
-
--- DO SOME PROCESSING
--------------------------------------------------
--- Add all of the temperatures
-addStuff :: [Int] -> Int
-addStuff (x:xs) = x + addStuff xs
--------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
 main :: IO ()
 main = do 
  de <- (eitherDecode <$> getJSON) :: IO (Either String Temperatures)
