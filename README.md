@@ -2,7 +2,7 @@
 Haskell Work
 
 
-Hello.txt is the file that stores the parsed JSON object as a string from the provided URL, it needs to be in the same directory as the two other files in order for the code to run correctly. 
+Hello.txt is the file that stores the parsed JSON object as a string from the provided URL, it needs to be in the same directory as the two other files in order for the code to run correctly. The text file Hello.txt isn't created in code so each time you run test.hs it writes to the already existing Hello.txt, so you have to manually make the file empty if you want to repeatedly test the code.
 
 'test.hs' contains the code to take the JSON object and write it to file.
 'WS.hs' has the code to extract a Temperatures object from file and attempts to serve it up.
@@ -40,13 +40,17 @@ I did use an unsafePerformIO, I only did this so that I could test whether my se
 
 I managed to get WS.hs to compile by instead of trying to serve up Temperatures, serve up a parsed (Maybe Temperatures) in the form of an Int (all of the temperature readings added together).
 
-The only error I get is each time you you load localhost:8000 in the browser you get this response in the terminal:
+The only error I get is each time you load localhost:8000 in the browser you get this response in the terminal:
 
 HTTP request failed with: Maybe.fromJust: Nothing
 
 This is very indicative of a decode error not a logical error with my serving up code, which is encouraging!
 
+This assignment allowed me to explore using maps, monads and functors instead of writing lots of boilerplate code to do jobs which these types exist for.
+
 Although I made some progress in ALMOST serving up some arbitrary number using the temperature data from file 
 (It would serve up if getTemps actually returned a (Maybe Temperatures)!) I'd like to agree to the viva because it gives me a chance to explain my progress and thoughts behind how I went about trying to complete the assignment.
+
+Bradley
 
 
